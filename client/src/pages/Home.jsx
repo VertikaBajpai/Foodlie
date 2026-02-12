@@ -58,7 +58,7 @@ const Home = () => {
       setLoading(true);
       try {
         const res = await getAllProducts();
-        setProducts(res.data);
+        setProducts(res.data || []);
       } catch (error) {
         console.log(error);
       } finally {

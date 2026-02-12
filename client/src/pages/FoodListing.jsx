@@ -99,7 +99,7 @@ const FoodListing = () => {
             }&categories=${selectedCategories.join(",")}`
             : `minPrice=${priceRange[0]}&maxPrice=${priceRange[1]}`
         );
-        setProducts(res.data);
+        setProducts(res.data || []);
       } catch (error) {
         console.log(error);
       } finally {
