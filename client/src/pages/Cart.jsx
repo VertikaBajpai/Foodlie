@@ -205,11 +205,15 @@ const Cart = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      setLoading(true);
       const token = localStorage.getItem("foodeli-app-token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
       try {
         const res = await getCart(token);
-        setProducts(res.data);
+        setProducts(res.data || []);
       } catch (error) {
         console.log(error);
         dispatch(

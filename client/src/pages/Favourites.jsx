@@ -46,11 +46,15 @@ const Favourites = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      setLoading(true);
       const token = localStorage.getItem("foodeli-app-token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
       try {
         const res = await getFavourite(token);
-        setProducts(res.data);
+        setProducts(res.data || []);
       } catch (error) {
         console.log(error);
       } finally {

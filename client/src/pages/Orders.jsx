@@ -85,7 +85,7 @@ const Status = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${({ theme, status }) =>
-        status === "Placed" ? theme.primary : theme.text_secondary};
+    status === "Placed" ? theme.primary : theme.text_secondary};
   text-align: right;
 `;
 
@@ -95,67 +95,71 @@ const DateText = styled.div`
 `;
 
 const Orders = () => {
-    const [loading, setLoading] = useState(false);
-    const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [orders, setOrders] = useState([]);
 
-    const getMyOrders = async () => {
-        setLoading(true);
-        const token = localStorage.getItem("foodeli-app-token");
-        try {
-            const res = await getOrders(token);
-            setOrders(res.data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const getMyOrders = async () => {
+    const token = localStorage.getItem("foodeli-app-token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await getOrders(token);
+      setOrders(res.data || []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        getMyOrders();
-    }, []);
+  useEffect(() => {
+    getMyOrders();
+  }, []);
 
-    return (
-        <Container>
-            <Section>
-                <Title>Your Orders</Title>
-                {loading ? (
-                    <CircularProgress />
-                ) : (
-                    <CardWrapper>
-                        {orders.length === 0 ? (
-                            <>No orders found</>
-                        ) : (
-                            orders.map((order) => (
-                                <OrderCard key={order._id}>
-                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                        <OrderTitle>Order #{order._id.slice(-6)}</OrderTitle>
-                                        <DateText>{new Date(order.createdAt).toLocaleDateString()}</DateText>
-                                    </div>
+  return (
+    <Container>
+      <Section>
+        <Title>Your Orders</Title>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <CardWrapper>
+            {orders.length === 0 ? (
+              <>No orders found</>
+            ) : (
+              orders.map((order) => (
+                <OrderCard key={order._id}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <OrderTitle>Order #{order._id.slice(-6)}</OrderTitle>
+                    <DateText>{new Date(order.createdAt).toLocaleDateString()}</DateText>
+                  </div>
 
-                                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                                        {order.products.map((item) => (
-                                            <OrderItem key={item.product._id}>
-                                                <span>{item.product.name} x {item.quantity}</span>
-                                                <span>${(item.product.price.org * item.quantity).toFixed(2)}</span>
-                                            </OrderItem>
-                                        ))}
-                                    </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    {order.products.map((item) => (
+                      <OrderItem key={item.product._id}>
+                        <span>{item.product.name} x {item.quantity}</span>
+                        <span>${(item.product.price.org * item.quantity).toFixed(2)}</span>
+                      </OrderItem>
+                    ))}
+                  </div>
 
-                                    <TotalAmount>
-                                        <span>Total Amount:</span>
-                                        <span>${order.total_amount}</span>
-                                    </TotalAmount>
+                  <TotalAmount>
+                    <span>Total Amount:</span>
+                    <span>${order.total_amount}</span>
+                  </TotalAmount>
 
-                                    <Status status="Placed">Status: Placed</Status>
-                                </OrderCard>
-                            ))
-                        )}
-                    </CardWrapper>
-                )}
-            </Section>
-        </Container>
-    );
+                  <Status status="Placed">Status: Placed</Status>
+                </OrderCard>
+              ))
+            )}
+          </CardWrapper>
+        )}
+      </Section>
+    </Container>
+  );
 };
 
 export default Orders;
