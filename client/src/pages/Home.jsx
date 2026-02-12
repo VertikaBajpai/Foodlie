@@ -53,19 +53,18 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
 
-  const getProducts = async () => {
-    setLoading(true);
-    try {
-      const res = await getAllProducts();
-      setProducts(res.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const getProducts = async () => {
+      setLoading(true);
+      try {
+        const res = await getAllProducts();
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     getProducts();
   }, []);
 

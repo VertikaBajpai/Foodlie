@@ -3,7 +3,6 @@ import styled from "styled-components";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import { addToCart, deleteFromCart, getCart, placeOrder } from "../api";
-import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { openSnackbar } from "../redux/reducers/SnackbarSlice";
@@ -108,10 +107,6 @@ const ProDesc = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-const ProSize = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-`;
 
 const Right = styled.div`
   flex: 1;
@@ -137,7 +132,6 @@ const Delivery = styled.div`
 `;
 
 const Cart = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(false);
@@ -151,25 +145,6 @@ const Cart = () => {
     completeAddress: "",
   });
 
-  const getProducts = async () => {
-    setLoading(true);
-    const token = localStorage.getItem("foodeli-app-token");
-    try {
-      const res = await getCart(token);
-      setProducts(res.data);
-    } catch (error) {
-      console.log(error);
-      dispatch(
-        openSnackbar({
-          message: error.response?.data?.message || "Failed to load cart",
-          severity: "error",
-        })
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const calculateSubtotal = () => {
     return products.reduce(
       (total, item) => total + item.quantity * item?.product?.price?.org,
@@ -177,7 +152,6 @@ const Cart = () => {
     );
   };
   const convertAddressToString = (addressObj) => {
-    // Convert the address object to a string representation
     return `${addressObj.firstName} ${addressObj.lastName}, ${addressObj.completeAddress}, ${addressObj.phoneNumber}, ${addressObj.emailAddress}`;
   };
 
@@ -192,7 +166,6 @@ const Cart = () => {
         deliveryDetails.emailAddress;
 
       if (!isDeliveryDetailsFilled) {
-        // Show an error message or handle the situation where delivery details are incomplete
         dispatch(
           openSnackbar({
             message: "Please fill in all required delivery details.",
@@ -218,7 +191,6 @@ const Cart = () => {
         })
       );
       setButtonLoad(false);
-      // Clear the cart and update the UI
       setReload(!reload);
     } catch (err) {
       dispatch(
@@ -232,8 +204,26 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    const getProducts = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("foodeli-app-token");
+      try {
+        const res = await getCart(token);
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+        dispatch(
+          openSnackbar({
+            message: error.response?.data?.message || "Failed to load cart",
+            severity: "error",
+          })
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
     getProducts();
-  }, [reload]);
+  }, [reload, dispatch]);
 
   const addCart = async (id) => {
     const token = localStorage.getItem("foodeli-app-token");

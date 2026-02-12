@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CircularProgress, Rating } from "@mui/material";
 import {
-  AddShoppingCartOutlined,
   FavoriteBorder,
   FavoriteRounded,
   ShoppingBagOutlined,
-  ShoppingCart,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import {
@@ -204,26 +202,6 @@ const ProductsCard = ({ product }) => {
     }
   };
 
-  const checkFavorite = async () => {
-    setFavoriteLoading(true);
-    const token = localStorage.getItem("foodeli-app-token");
-    if (!token) {
-      setFavoriteLoading(false);
-      return;
-    }
-    try {
-      const res = await getFavourite(token, { productId: product?._id });
-      const isFavorite = res.data?.some(
-        (favorite) => favorite._id === product?._id
-      );
-      setFavorite(isFavorite);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setFavoriteLoading(false);
-    }
-  };
-
   const addCart = async (id) => {
     const token = localStorage.getItem("foodeli-app-token");
     if (!token) {
@@ -255,8 +233,27 @@ const ProductsCard = ({ product }) => {
   };
 
   useEffect(() => {
+    const checkFavorite = async () => {
+      setFavoriteLoading(true);
+      const token = localStorage.getItem("foodeli-app-token");
+      if (!token) {
+        setFavoriteLoading(false);
+        return;
+      }
+      try {
+        const res = await getFavourite(token, { productId: product?._id });
+        const isFavorite = res.data?.some(
+          (fav) => fav._id === product?._id
+        );
+        setFavorite(isFavorite);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setFavoriteLoading(false);
+      }
+    };
     checkFavorite();
-  }, [favorite]);
+  }, [product?._id, favorite]);
   return (
     <Card>
       <Top onClick={() => navigate(`/dishes/${product?._id}`)}>
