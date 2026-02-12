@@ -62,19 +62,19 @@ const Search = () => {
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState("");
 
-    const getFilteredProductsData = async () => {
-        setLoading(true);
-        try {
-            const res = await getAllProducts(`search=${search}`);
-            setProducts(res.data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const getFilteredProductsData = async () => {
+            setLoading(true);
+            try {
+                const res = await getAllProducts(`search=${search}`);
+                setProducts(res.data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         // Debounce search to avoid too many API calls
         const delayDebounceFn = setTimeout(() => {
             getFilteredProductsData();

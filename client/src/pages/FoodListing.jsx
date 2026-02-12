@@ -88,25 +88,24 @@ const FoodListing = () => {
   const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
   const [selectedCategories, setSelectedCategories] = useState([]); // Default selected categories
 
-  const getFilteredProductsData = async () => {
-    setLoading(true);
-    // Call the API function for filtered products
-    try {
-      const res = await getAllProducts(
-        selectedCategories.length > 0
-          ? `minPrice=${priceRange[0]}&maxPrice=${priceRange[1]
-          }&categories=${selectedCategories.join(",")}`
-          : `minPrice=${priceRange[0]}&maxPrice=${priceRange[1]}`
-      );
-      setProducts(res.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const getFilteredProductsData = async () => {
+      setLoading(true);
+      // Call the API function for filtered products
+      try {
+        const res = await getAllProducts(
+          selectedCategories.length > 0
+            ? `minPrice=${priceRange[0]}&maxPrice=${priceRange[1]
+            }&categories=${selectedCategories.join(",")}`
+            : `minPrice=${priceRange[0]}&maxPrice=${priceRange[1]}`
+        );
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     getFilteredProductsData();
   }, [priceRange, selectedCategories]);
 
