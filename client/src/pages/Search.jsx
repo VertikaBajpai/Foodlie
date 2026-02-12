@@ -4,7 +4,7 @@ import TextInput from "../components/TextInput";
 import { getAllProducts } from "../api";
 import ProductsCard from "../components/cards/ProductsCard";
 import { CircularProgress } from "@mui/material";
-import { SearchRounded } from "@mui/icons-material";
+
 
 const Container = styled.div`
   padding: 20px 30px;
