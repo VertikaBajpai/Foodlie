@@ -146,14 +146,6 @@ const FoodDetails = () => {
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState();
 
-  const getProduct = async () => {
-    setLoading(true);
-    await getProductDetails(id).then((res) => {
-      setProduct(res.data);
-      setLoading(false);
-    });
-  };
-
   const removeFavourite = async () => {
     setFavoriteLoading(true);
     const token = localStorage.getItem("foodeli-app-token");
@@ -192,32 +184,38 @@ const FoodDetails = () => {
       });
   };
 
-  const checkFavorite = async () => {
-    setFavoriteLoading(true);
-    const token = localStorage.getItem("foodeli-app-token");
-    await getFavourite(token, { productId: id })
-      .then((res) => {
-        const isFavorite = res.data?.some((favorite) => favorite._id === id);
-
-        setFavorite(isFavorite);
-
-        setFavoriteLoading(false);
-      })
-      .catch((err) => {
-        setFavoriteLoading(false);
-        dispatch(
-          openSnackbar({
-            message: err.message,
-            severity: "error",
-          })
-        );
-      });
-  };
-
   useEffect(() => {
+    const getProduct = async () => {
+      setLoading(true);
+      await getProductDetails(id).then((res) => {
+        setProduct(res.data);
+        setLoading(false);
+      });
+    };
+    const checkFavorite = async () => {
+      setFavoriteLoading(true);
+      const token = localStorage.getItem("foodeli-app-token");
+      await getFavourite(token, { productId: id })
+        .then((res) => {
+          const isFavorite = res.data?.some((favorite) => favorite._id === id);
+
+          setFavorite(isFavorite);
+
+          setFavoriteLoading(false);
+        })
+        .catch((err) => {
+          setFavoriteLoading(false);
+          dispatch(
+            openSnackbar({
+              message: err.message,
+              severity: "error",
+            })
+          );
+        });
+    };
     getProduct();
     checkFavorite();
-  }, []);
+  }, [id, dispatch]);
 
   const addCart = async () => {
     setCartLoading(true);
