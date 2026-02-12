@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import {
-  FavoriteBorder,
+
   FavoriteBorderOutlined,
   FavoriteRounded,
 } from "@mui/icons-material";
@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   addToCart,
   addToFavourite,
-  deleteFromCart,
+
   deleteFromFavourite,
   getFavourite,
   getProductDetails,
