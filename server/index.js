@@ -31,24 +31,31 @@ app.get("/", async (req, res) => {
   });
 });
 
-const connectDB = () => {
+const connectDB = async () => {
+  if (mongoose.connections[0].readyState) return;
   mongoose.set("strictQuery", true);
-  mongoose
-    .connect(process.env.MONGODB_URL)
-    .then(() => console.log("Connected to Mongo DB"))
-    .catch((err) => {
-      console.error("failed to connect with mongo");
-      console.error(err);
-    });
-};
-
-const startServer = async () => {
   try {
-    connectDB();
-    app.listen(8080, () => console.log("Server started on port 8080"));
-  } catch (error) {
-    console.log(error);
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log("Connected to Mongo DB");
+  } catch (err) {
+    console.error("failed to connect with mongo");
+    console.error(err);
   }
 };
 
-startServer();
+// Initialize DB connection
+connectDB();
+
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+  const startServer = async () => {
+    try {
+      await connectDB();
+      app.listen(8080, () => console.log("Server started on port 8080"));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  startServer();
+}
+
+export default app;
