@@ -7,7 +7,14 @@ import FoodRoutes from "./routes/Food.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// CORS configuration — allow your Vercel frontend
+app.use(cors({
+  origin: process.env.CLIENT_URL || "*",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  credentials: true,
+}));
+
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true })); // for form data
 
@@ -27,7 +34,7 @@ app.use((err, req, res, next) => {
 
 app.get("/", async (req, res) => {
   res.status(200).json({
-    message: "Hello!",
+    message: "Hello! Foodeli API is running.",
   });
 });
 
@@ -43,19 +50,13 @@ const connectDB = async () => {
   }
 };
 
-// Initialize DB connection
-connectDB();
-
-if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
-  const startServer = async () => {
-    try {
-      await connectDB();
-      app.listen(8080, () => console.log("Server started on port 8080"));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  startServer();
-}
+// Start server
+// Start server — must bind to 0.0.0.0 for Render to detect the port
+const PORT = process.env.PORT || 8080;
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, "0.0.0.0", () => console.log(`Server started on port ${PORT}`));
+};
+startServer();
 
 export default app;

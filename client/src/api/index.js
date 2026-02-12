@@ -1,11 +1,9 @@
 import axios from "axios";
 
-const baseURL = process.env.NODE_ENV === "production"
-  ? "/api/"
-  : "http://localhost:8080/api/";
-
+// In production, REACT_APP_API_URL must be set to your deployed server URL
+// e.g., https://your-server.onrender.com/api/
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || baseURL,
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8080/api/",
 });
 
 //auth
