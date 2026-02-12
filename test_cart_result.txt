@@ -1,0 +1,11 @@
+Fetching products...
+Found product: Classic Burger (698dde260a361c826e07f716)
+Signing up user: testuser_1770909465793@example.com
+User signed up, token received.
+Adding to cart...
+Add to cart response: {"message":"Product added to cart successfully","user":{"_id":"698def19ca109e37e994921c","name":"Test User","email":"testuser_1770909465793@example.com","password":"$2b$10$6d.Wl6CUdKFvGr0IqIDehu0vOioqZn9hg9mU6I0Il4aq99B2IwXG2","img":null,"favourites":[],"orders":[],"cart":[{"product":"698dde260a361c826e07f716","quantity":1,"_id":"698def1aca109e37e9949221"}],"createdAt":"2026-02-12T15:17:45.950Z","updatedAt":"2026-02-12T15:17:46.103Z","__v":1}}
+Fetching cart...
+Cart data (raw): [{"product":{"_id":"698dde260a361c826e07f716","name":"Classic Burger","desc":"Juicy beef patty with fresh lettuce, tomatoes, and special sauce","img":"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500","price":{"org":8.99,"mrp":12.99,"off":31,"_id":"698dde260a361c826e07f717"},"category":["Burger"],"ingredients":["Beef","Lettuce","Tomato","Cheese","Bun"],"__v":0,"createdAt":"2026-02-12T14:05:26.647Z","updatedAt":"2026-02-12T14:05:26.647Z"},"quantity":1,"_id":"698def1aca109e37e9949221"}]
+Cart item count: 1
+First item: {"product":{"_id":"698dde260a361c826e07f716","name":"Classic Burger","desc":"Juicy beef patty with fresh lettuce, tomatoes, and special sauce","img":"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500","price":{"org":8.99,"mrp":12.99,"off":31,"_id":"698dde260a361c826e07f717"},"category":["Burger"],"ingredients":["Beef","Lettuce","Tomato","Cheese","Bun"],"__v":0,"createdAt":"2026-02-12T14:05:26.647Z","updatedAt":"2026-02-12T14:05:26.647Z"},"quantity":1,"_id":"698def1aca109e37e9949221"}
+Product in cart: {"_id":"698dde260a361c826e07f716","name":"Classic Burger","desc":"Juicy beef patty with fresh lettuce, tomatoes, and special sauce","img":"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500","price":{"org":8.99,"mrp":12.99,"off":31,"_id":"698dde260a361c826e07f717"},"category":["Burger"],"ingredients":["Beef","Lettuce","Tomato","Cheese","Bun"],"__v":0,"createdAt":"2026-02-12T14:05:26.647Z","updatedAt":"2026-02-12T14:05:26.647Z"}
